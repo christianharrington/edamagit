@@ -261,6 +261,10 @@ function spawn(path: string, args: string[], options: SpawnOptions = {}): cp.Chi
     LC_ALL: 'en_US.UTF-8',
     LANG: 'en_US.UTF-8',
     GIT_PAGER: 'cat',
+    // Don't include the ELECTRON_RUN_AS_NODE environment variable - if we're running in a remote host,
+    // this will be picked up from the client and will cause failures.
+    ELECTRON_RUN_AS_NODE: undefined
+
 
     // TODO: add ask pass functionality
     // GIT_ASKPASS: path.join(__dirname, 'askpass.sh'),
