@@ -63,13 +63,14 @@ export class HelpView extends DocumentView {
 
   private static createHelpText(c: any) {
     return `Popup and dwim commands
-  ${HelpView.joinTexts(19, [`${c['magit.cherry-picking']} Cherry-pick`, `${c['magit.branching']} Branch`, `${c['magit.commit']} Commit`])}
-  ${HelpView.joinTexts(19, [`${c['magit.diffing']} Diff`, `${c['magit.fetching']} Fetch`, `${c['magit.pulling']} Pull`])}
-  ${HelpView.joinTexts(19, [`${c['magit.ignoring']} Ignore`, `${c['magit.logging']} Log`, `${c['magit.merging']} Merge`])}
-  ${HelpView.joinTexts(19, [`${c['magit.remoting']} Remote`, `${c['magit.pushing']} Push`, `${c['magit.rebasing']} Rebase`])}
-  ${HelpView.joinTexts(19, [`${c['magit.tagging']} Tag`, `${c['magit.reverting']} Revert`, `${c['magit.resetting']} Reset`])}
-  ${HelpView.joinTexts(19, [`${c['magit.show-refs']} Show Refs`, `${c['magit.stashing']} Stash`, `${c['magit.running']} Run`])}
-  ${HelpView.joinTexts(19, [`${c['magit.worktree']} Worktree`, `${c['magit.submodules']} Submodules`, `${c['magit.process-log']} Process Log`])}
+  ${HelpView.joinTexts(19, [`${c['magit.cherry-picking']} Cherry-pick`, `${c['magit.branching']} Branch`, `${c['magit.bisect']} Bisect`])}
+  ${HelpView.joinTexts(19, [`${c['magit.commit']} Commit`, `${c['magit.diffing']} Diff`, `${c['magit.fetching']} Fetch`])}
+  ${HelpView.joinTexts(19, [`${c['magit.pulling']} Pull`, `${c['magit.ignoring']} Ignore`, `${c['magit.logging']} Log`])}
+  ${HelpView.joinTexts(19, [`${c['magit.merging']} Merge`, `${c['magit.remoting']} Remote`, `${c['magit.pushing']} Push`])}
+  ${HelpView.joinTexts(19, [`${c['magit.rebasing']} Rebase`, `${c['magit.tagging']} Tag`, `${c['magit.reverting']} Revert`])}
+  ${HelpView.joinTexts(19, [`${c['magit.resetting']} Reset`, `${c['magit.show-refs']} Show Refs`, `${c['magit.stashing']} Stash`])}
+  ${HelpView.joinTexts(19, [`${c['magit.running']} Run`, `${c['magit.worktree']} Worktree`, `${c['magit.submodules']} Submodules`])}
+  ${HelpView.joinTexts(19, [`${c['magit.process-log']} Process Log`])}
 
 Applying changes
   ${HelpView.joinTexts(17, [`${c['magit.apply-at-point']} Apply`, `${c['magit.stage']} Stage`, `${c['magit.unstage']} Unstage`])}

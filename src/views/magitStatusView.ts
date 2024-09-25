@@ -19,6 +19,8 @@ import { getLatestGitError } from '../commands/commandPrimer';
 import { PullRequestSectionView } from './forge/pullRequestSectionView';
 import { IssueSectionView } from './forge/issueSectionView';
 import { ErrorMessageView } from './errorMessageView';
+import { BisectingSectionView } from './bisect/bisectingSectionView';
+import { getBisectRefs } from '../commands/bisectCommands';
 
 export default class MagitStatusView extends DocumentView {
 
@@ -59,6 +61,10 @@ export default class MagitStatusView extends DocumentView {
       this.addSubview(new RevertingSectionView(magitState.revertingState, magitState.log));
     }
 
+    if (magitState.bisectState?.bisecting) {
+      this.addSubview(new BisectingSectionView(magitState.bisectState));
+    }
+
     if (magitState.untrackedFiles.length && !magitConfig.hiddenStatusSections.has('untracked')) {
       this.addSubview(new ChangeSectionView(Section.Untracked, magitState.untrackedFiles));
     }
@@ -75,7 +81,10 @@ export default class MagitStatusView extends DocumentView {
       this.addSubview(new StashSectionView(magitState.stashes));
     }
 
-    const refs = magitState.remotes.reduce((prev, remote) => remote.branches.concat(prev), magitState.branches.concat(magitState.tags));
+    const refs = magitState.remotes.reduce(
+      (prev, remote) => remote.branches.concat(prev),
+      magitState.branches.concat(magitState.tags).concat(getBisectRefs(magitState))
+    );
 
     if (magitState.HEAD?.upstreamRemote?.ahead?.commits.length && !magitConfig.hiddenStatusSections.has('unmerged')) {
       this.addSubview(new UnsourcedCommitSectionView(Section.UnmergedInto, magitState.HEAD.upstreamRemote, magitState.HEAD.upstreamRemote.ahead, refs));
