@@ -38,6 +38,7 @@ export async function pushing(repository: MagitRepository) {
   const switches = [
     { key: '-f', name: '--force-with-lease', description: 'Force with lease' },
     { key: '-F', name: '--force', description: 'Force' },
+    { key: '-i', name: '--force-if-includes', description: 'Force if includes' },
     { key: '-h', name: '--no-verify', description: 'Disable hooks' },
     { key: '-d', name: '--dry-run', description: 'Dry run' }
   ];
