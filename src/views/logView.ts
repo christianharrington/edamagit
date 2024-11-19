@@ -10,6 +10,7 @@ import { DocumentView } from './general/documentView';
 import { TextView } from './general/textView';
 import { Ref } from '../typings/git';
 import ViewUtils from '../utils/viewUtils';
+import { addBisectRefsToLogEntry, getBisectRefs } from '../commands/bisectCommands';
 
 export default class LogView extends DocumentView {
 
@@ -18,11 +19,16 @@ export default class LogView extends DocumentView {
 
   constructor(uri: Uri, log: MagitLog, magitState: MagitRepository, defaultBranches?: { [remoteName: string]: string }) {
     super(uri);
-    const refs = magitState.remotes.reduce((prev, remote) => remote.branches.concat(prev), magitState.branches.concat(magitState.tags));
+    const refs = magitState.remotes.reduce(
+      (prev, remote) => remote.branches.concat(prev),
+      magitState.branches.concat(magitState.tags).concat(getBisectRefs(magitState))
+    );
 
     this.subViews = [
       new TextView(`Commits in ${log.revName}`),
-      ...log.entries.map(entry => new CommitLongFormItemView(entry, refs, magitState.HEAD?.name, defaultBranches)),
+      ...log.entries
+        .map(addBisectRefsToLogEntry(magitState))
+        .map(entry => new CommitLongFormItemView(entry, refs, magitState.HEAD?.name, defaultBranches)),
     ];
   }
 
