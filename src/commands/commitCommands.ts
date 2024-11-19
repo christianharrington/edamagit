@@ -199,6 +199,7 @@ function findCodePath(): string {
   // Check if we are currently running a Code Insiders or Codium build
   let isInsiders = vscode.env.appName.includes('Insider');
   let isCodium = vscode.env.appRoot.includes('codium');
+  let isCursor = vscode.env.appName.includes('Cursor');
   let isWindsurf = vscode.env.appName.includes('Windsurf');
   let isDarwin = process.platform === 'darwin';
   let isWindows = process.platform === 'win32';
@@ -208,10 +209,17 @@ function findCodePath(): string {
   if (isCodium && !isDarwin) {
     codePath = 'codium';
   }
+  
   if (isInsiders && !isDarwin) {
     // On Mac the binary for the Insiders build is still called `code`
     codePath += '-insiders';
   }
+
+  if (isCursor && isRemote) {
+    // Cursor remote-server does not symlink to code but to cursor.
+    codePath = 'cursor'; 
+  }
+
   if (isWindows && isRemote) {
     // On window remote server, 'code' alias doesn't exist
     codePath += '.cmd';
