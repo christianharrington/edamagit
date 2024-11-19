@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.64]
+- Bisect
+- Window re-use logic for mono repos
+- Support windsurf editor
+- Support cursor editor
+- Add flag to push: force-if-includes
+
+
 ## [0.6.60]
 - Set --no-ext-diff when running git diff, supporting configs with other diff tools (#228). (@garymm Gary Miguel)
 - Adds `magit-branch-spinoff` command (@bezbac Ben Bachem)
