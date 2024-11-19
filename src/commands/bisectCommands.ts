@@ -4,7 +4,7 @@ import { MagitBisectState } from '../models/magitBisectState';
 import { MagitLogEntry } from '../models/magitLogCommit';
 import { MagitRepository } from '../models/magitRepository';
 import { Ref, RefType, Repository } from '../typings/git';
-import { gitRun } from '../utils/gitRawRunner';
+import { gitRun, LogLevel } from '../utils/gitRawRunner';
 import MagitUtils from '../utils/magitUtils';
 import ViewUtils from '../utils/viewUtils';
 import LogView from '../views/logView';
@@ -65,7 +65,7 @@ function matchWithFallback(log: string, primaryPattern: RegExp, fallbackPattern:
 
 export async function bisectingStatus(repository: Repository): Promise<MagitBisectState> {
   try {
-    const output = await gitRun(repository, ['bisect', 'log']);
+    const output = await gitRun(repository, ['bisect', 'log'], undefined, LogLevel.None);
     const bisectLog = output.stdout.split('\n').reverse().join('\n');
 
     const goodPattern = /good: \[([a-f0-9]{40})\]/;
