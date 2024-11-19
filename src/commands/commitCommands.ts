@@ -122,10 +122,24 @@ export async function runCommitLikeCommand(repository: MagitRepository, args: st
       stagedEditorTask = Diffing.showDiffSection(repository, Section.Staged, true);
     }
 
-    const env: NodeJS.ProcessEnv = { 'GIT_EDITOR': `"${codePath}" --wait` };
+    // This passes the path to (the first) open workspace as the first command
+    // to the `code` command when invoked as `GIT_EDITOR`. This together with
+    // `--reuse-window` forces VSCode to open COMMIT_EDITMSG in the current
+    // workspace even if the file is more closely related to a different
+    // window/workspace.
+    // 
+    // https://github.com/kahole/edamagit/issues/301
+    let currentInstancePath = '';
+    if (vscode.workspace.workspaceFolders?.at(0)) {
+      currentInstancePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    }
+
+    const cmd = `"${codePath}" --wait --reuse-window ${currentInstancePath} `;
+
+    const env: NodeJS.ProcessEnv = { 'GIT_EDITOR': cmd };
 
     if (editor) {
-      env[editor] = `"${codePath}" --wait`;
+      env[editor] = cmd;
     }
 
     const commitSuccessMessageTask = gitRun(repository.gitRepository, args, { env });
@@ -186,6 +200,7 @@ function findCodePath(): string {
   let isInsiders = vscode.env.appName.includes('Insider');
   let isCodium = vscode.env.appRoot.includes('codium');
   let isCursor = vscode.env.appName.includes('Cursor');
+  let isWindsurf = vscode.env.appName.includes('Windsurf');
   let isDarwin = process.platform === 'darwin';
   let isWindows = process.platform === 'win32';
   let isRemote = !!vscode.env.remoteName;
@@ -208,6 +223,10 @@ function findCodePath(): string {
   if (isWindows && isRemote) {
     // On window remote server, 'code' alias doesn't exist
     codePath += '.cmd';
+  }
+  if (isWindsurf && isDarwin) {
+    // Windsurf on Mac: is called 'windsurf'
+    codePath = 'windsurf';
   }
 
   // Find the code binary on different platforms.

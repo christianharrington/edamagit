@@ -11,6 +11,7 @@ import { Stash } from './stash';
 import { PullRequest } from '../forge/model/pullRequest';
 import { Uri } from 'vscode';
 import { ForgeState } from '../forge/model/forgeState';
+import { MagitBisectState } from './magitBisectState';
 
 export interface MagitRepository {
   readonly uri: Uri;
@@ -33,4 +34,6 @@ export interface MagitRepository {
   readonly gitRepository: Repository;
 
   readonly forgeState?: ForgeState;
+
+  readonly bisectState?: MagitBisectState;
 }

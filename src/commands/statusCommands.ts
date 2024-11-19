@@ -18,6 +18,7 @@ import { Stash } from '../models/stash';
 import { MagitRepository } from '../models/magitRepository';
 import ViewUtils from '../utils/viewUtils';
 import { scheduleForgeStatusAsync, forgeStatusCached } from '../forge';
+import { bisectingStatus } from './bisectCommands';
 
 const maxCommitsAheadBehind = 50;
 
@@ -176,6 +177,8 @@ export async function internalMagitStatus(repository: Repository): Promise<Magit
 
   const forgeState = forgeStatusCached(remotes);
 
+  const bisectingStatusTask = bisectingStatus(repository);
+
   return {
     uri: repository.rootUri,
     HEAD,
@@ -196,6 +199,7 @@ export async function internalMagitStatus(repository: Repository): Promise<Magit
     submodules: repository.state.submodules,
     gitRepository: repository,
     forgeState: forgeState,
+    bisectState: await bisectingStatusTask
   };
 }
 
